@@ -1,0 +1,36 @@
+{% extends 'Ferreteria/base.html' %}
+{% load static %}
+{% block title %}Catálogo · McHammer{% endblock %}
+
+{% block content %}
+<h1>Catálogo de productos</h1>
+
+<div class="grid mt-2">
+    {% for producto in productos %}
+    <article class="card">
+        <div class="card-img">
+            {% if producto.imagen %}
+                <img src="{% static 'Ferreteria/img/' %}{{ producto.imagen }}" alt="{{ producto.nombre }}">
+            {% endif %}
+        </div>
+        <div class="card-body">
+            <span class="categoria">{{ producto.categoria }}</span>
+            <h2>{{ producto.nombre }}</h2>
+            <p class="precio">${{ producto.precio }}</p>
+
+            {% if producto.stock > 0 %}
+                <p class="stock ok">Disponible: {{ producto.stock }}</p>
+                <a class="btn btn-primary" href="{% url 'agregar_carrito' producto.id %}?next={{ request.path }}">
+                    🛒 Agregar al carrito
+                </a>
+            {% else %}
+                <p class="stock no">Sin stock</p>
+                <button class="btn btn-secondary" disabled>Agotado</button>
+            {% endif %}
+        </div>
+    </article>
+    {% empty %}
+        <p>No hay productos cargados.</p>
+    {% endfor %}
+</div>
+{% endblock %}

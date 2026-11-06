@@ -1,0 +1,28 @@
+{% extends 'Ferreteria/base.html' %}
+{% block title %}Iniciar sesión · McHammer{% endblock %}
+
+{% block content %}
+<div class="form-box">
+    <h1>Iniciar sesión</h1>
+
+    {% if form.errors %}
+        <div class="msg error">Usuario o contraseña incorrectos.</div>
+    {% endif %}
+
+    <form method="post">
+        {% csrf_token %}
+        <label for="id_username">Usuario</label>
+        <input type="text" name="username" id="id_username" autofocus required>
+
+        <label for="id_password">Contraseña</label>
+        <input type="password" name="password" id="id_password" required>
+
+        <button type="submit" class="btn btn-primary">Entrar</button>
+        <input type="hidden" name="next" value="{{ next }}">
+    </form>
+
+    <p class="text-muted mt-2" style="text-align:center; font-size:0.9rem;">
+        ¿No tienes cuenta? <a href="{% url 'registro' %}">Regístrate</a>
+    </p>
+</div>
+{% endblock %}

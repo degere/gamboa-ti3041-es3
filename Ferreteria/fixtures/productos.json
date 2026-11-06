@@ -1,0 +1,442 @@
+[
+  {
+    "model": "Ferreteria.producto",
+    "pk": 1,
+    "fields": {
+      "nombre": "Martillo",
+      "categoria": "Herramientas",
+      "precio": 11875,
+      "stock": 15,
+      "imagen": "1.jpg"
+    }
+  },
+  {
+    "model": "Ferreteria.producto",
+    "pk": 2,
+    "fields": {
+      "nombre": "Destornillador",
+      "categoria": "Herramientas",
+      "precio": 8455,
+      "stock": 0,
+      "imagen": "2.jpg"
+    }
+  },
+  {
+    "model": "Ferreteria.producto",
+    "pk": 3,
+    "fields": {
+      "nombre": "Taladro",
+      "categoria": "Electricidad",
+      "precio": 42750,
+      "stock": 7,
+      "imagen": "3.jpg"
+    }
+  },
+  {
+    "model": "Ferreteria.producto",
+    "pk": 4,
+    "fields": {
+      "nombre": "Sierra circular",
+      "categoria": "Electricidad",
+      "precio": 57190,
+      "stock": 3,
+      "imagen": "4.jpg"
+    }
+  },
+  {
+    "model": "Ferreteria.producto",
+    "pk": 5,
+    "fields": {
+      "nombre": "Llave ajustable",
+      "categoria": "Herramientas",
+      "precio": 14535,
+      "stock": 10,
+      "imagen": "5.jpg"
+    }
+  },
+  {
+    "model": "Ferreteria.producto",
+    "pk": 6,
+    "fields": {
+      "nombre": "Pinza",
+      "categoria": "Herramientas",
+      "precio": 7030,
+      "stock": 20,
+      "imagen": "6.jpg"
+    }
+  },
+  {
+    "model": "Ferreteria.producto",
+    "pk": 7,
+    "fields": {
+      "nombre": "Cinta metrica",
+      "categoria": "Medicion",
+      "precio": 5320,
+      "stock": 25,
+      "imagen": "7.jpg"
+    }
+  },
+  {
+    "model": "Ferreteria.producto",
+    "pk": 8,
+    "fields": {
+      "nombre": "Nivel",
+      "categoria": "Medicion",
+      "precio": 17955,
+      "stock": 0,
+      "imagen": "8.jpg"
+    }
+  },
+  {
+    "model": "Ferreteria.producto",
+    "pk": 9,
+    "fields": {
+      "nombre": "Lijadora",
+      "categoria": "Electricidad",
+      "precio": 30495,
+      "stock": 5,
+      "imagen": "9.jpg"
+    }
+  },
+  {
+    "model": "Ferreteria.producto",
+    "pk": 10,
+    "fields": {
+      "nombre": "Pintura blanca 1L",
+      "categoria": "Pintura",
+      "precio": 9490,
+      "stock": 30,
+      "imagen": "10.jpg"
+    }
+  },
+  {
+    "model": "Ferreteria.producto",
+    "pk": 11,
+    "fields": {
+      "nombre": "Pintura azul 1L",
+      "categoria": "Pintura",
+      "precio": 9975,
+      "stock": 12,
+      "imagen": "11.jpg"
+    }
+  },
+  {
+    "model": "Ferreteria.producto",
+    "pk": 12,
+    "fields": {
+      "nombre": "Rodillo",
+      "categoria": "Pintura",
+      "precio": 3990,
+      "stock": 40,
+      "imagen": "12.jpg"
+    }
+  },
+  {
+    "model": "Ferreteria.producto",
+    "pk": 13,
+    "fields": {
+      "nombre": "Brocas para metal",
+      "categoria": "Accesorios",
+      "precio": 6460,
+      "stock": 18,
+      "imagen": "13.jpg"
+    }
+  },
+  {
+    "model": "Ferreteria.producto",
+    "pk": 14,
+    "fields": {
+      "nombre": "Brocas para madera",
+      "categoria": "Accesorios",
+      "precio": 6935,
+      "stock": 0,
+      "imagen": "14.jpg"
+    }
+  },
+  {
+    "model": "Ferreteria.producto",
+    "pk": 15,
+    "fields": {
+      "nombre": "Cerradura",
+      "categoria": "Seguridad",
+      "precio": 20900,
+      "stock": 8,
+      "imagen": "15.jpg"
+    }
+  },
+  {
+    "model": "Ferreteria.producto",
+    "pk": 16,
+    "fields": {
+      "nombre": "Perno M8",
+      "categoria": "Ferreteria",
+      "precio": 475,
+      "stock": 200,
+      "imagen": "16.jpg"
+    }
+  },
+  {
+    "model": "Ferreteria.producto",
+    "pk": 17,
+    "fields": {
+      "nombre": "Tuerca M8",
+      "categoria": "Ferreteria",
+      "precio": 285,
+      "stock": 150,
+      "imagen": "17.jpg"
+    }
+  },
+  {
+    "model": "Ferreteria.producto",
+    "pk": 18,
+    "fields": {
+      "nombre": "Arandela",
+      "categoria": "Ferreteria",
+      "precio": 95,
+      "stock": 500,
+      "imagen": "18.jpg"
+    }
+  },
+  {
+    "model": "Ferreteria.producto",
+    "pk": 19,
+    "fields": {
+      "nombre": "Lampara LED",
+      "categoria": "Electricidad",
+      "precio": 14250,
+      "stock": 0,
+      "imagen": "19.jpg"
+    }
+  },
+  {
+    "model": "Ferreteria.producto",
+    "pk": 20,
+    "fields": {
+      "nombre": "Cable electrico 10m",
+      "categoria": "Electricidad",
+      "precio": 11685,
+      "stock": 20,
+      "imagen": "20.jpg"
+    }
+  },
+  {
+    "model": "Ferreteria.producto",
+    "pk": 21,
+    "fields": {
+      "nombre": "Enchufe",
+      "categoria": "Electricidad",
+      "precio": 3040,
+      "stock": 45,
+      "imagen": "21.jpg"
+    }
+  },
+  {
+    "model": "Ferreteria.producto",
+    "pk": 22,
+    "fields": {
+      "nombre": "Interruptor",
+      "categoria": "Electricidad",
+      "precio": 4275,
+      "stock": 33,
+      "imagen": "22.jpg"
+    }
+  },
+  {
+    "model": "Ferreteria.producto",
+    "pk": 23,
+    "fields": {
+      "nombre": "Cinta aislante",
+      "categoria": "Electricidad",
+      "precio": 1710,
+      "stock": 60,
+      "imagen": "23.jpg"
+    }
+  },
+  {
+    "model": "Ferreteria.producto",
+    "pk": 24,
+    "fields": {
+      "nombre": "Serrucho",
+      "categoria": "Herramientas",
+      "precio": 13490,
+      "stock": 6,
+      "imagen": "24.jpg"
+    }
+  },
+  {
+    "model": "Ferreteria.producto",
+    "pk": 25,
+    "fields": {
+      "nombre": "Formon",
+      "categoria": "Herramientas",
+      "precio": 9405,
+      "stock": 0,
+      "imagen": "25.jpg"
+    }
+  },
+  {
+    "model": "Ferreteria.producto",
+    "pk": 26,
+    "fields": {
+      "nombre": "Cepillo",
+      "categoria": "Herramientas",
+      "precio": 10450,
+      "stock": 9,
+      "imagen": "26.jpg"
+    }
+  },
+  {
+    "model": "Ferreteria.producto",
+    "pk": 27,
+    "fields": {
+      "nombre": "Soplete",
+      "categoria": "Herramientas",
+      "precio": 26125,
+      "stock": 4,
+      "imagen": "27.jpg"
+    }
+  },
+  {
+    "model": "Ferreteria.producto",
+    "pk": 28,
+    "fields": {
+      "nombre": "Manguera 15m",
+      "categoria": "Jardin",
+      "precio": 18810,
+      "stock": 11,
+      "imagen": "28.jpg"
+    }
+  },
+  {
+    "model": "Ferreteria.producto",
+    "pk": 29,
+    "fields": {
+      "nombre": "Regadera",
+      "categoria": "Jardin",
+      "precio": 7980,
+      "stock": 0,
+      "imagen": "29.jpg"
+    }
+  },
+  {
+    "model": "Ferreteria.producto",
+    "pk": 30,
+    "fields": {
+      "nombre": "Tijeras de podar",
+      "categoria": "Jardin",
+      "precio": 12920,
+      "stock": 7,
+      "imagen": "30.jpg"
+    }
+  },
+  {
+    "model": "Ferreteria.producto",
+    "pk": 31,
+    "fields": {
+      "nombre": "Guantes de trabajo",
+      "categoria": "Seguridad",
+      "precio": 5605,
+      "stock": 22,
+      "imagen": "31.jpg"
+    }
+  },
+  {
+    "model": "Ferreteria.producto",
+    "pk": 32,
+    "fields": {
+      "nombre": "Gafas de seguridad",
+      "categoria": "Seguridad",
+      "precio": 6365,
+      "stock": 14,
+      "imagen": "32.jpg"
+    }
+  },
+  {
+    "model": "Ferreteria.producto",
+    "pk": 33,
+    "fields": {
+      "nombre": "Mascarilla",
+      "categoria": "Seguridad",
+      "precio": 2185,
+      "stock": 30,
+      "imagen": "33.jpg"
+    }
+  },
+  {
+    "model": "Ferreteria.producto",
+    "pk": 34,
+    "fields": {
+      "nombre": "Extension electrica 5m",
+      "categoria": "Electricidad",
+      "precio": 9690,
+      "stock": 0,
+      "imagen": "34.jpg"
+    }
+  },
+  {
+    "model": "Ferreteria.producto",
+    "pk": 35,
+    "fields": {
+      "nombre": "Foco",
+      "categoria": "Electricidad",
+      "precio": 3895,
+      "stock": 18,
+      "imagen": "35.jpg"
+    }
+  },
+  {
+    "model": "Ferreteria.producto",
+    "pk": 36,
+    "fields": {
+      "nombre": "Cinta de teflon",
+      "categoria": "Ferreteria",
+      "precio": 855,
+      "stock": 50,
+      "imagen": "36.jpg"
+    }
+  },
+  {
+    "model": "Ferreteria.producto",
+    "pk": 37,
+    "fields": {
+      "nombre": "Pegamento instantaneo",
+      "categoria": "Ferreteria",
+      "precio": 3515,
+      "stock": 15,
+      "imagen": "37.jpg"
+    }
+  },
+  {
+    "model": "Ferreteria.producto",
+    "pk": 38,
+    "fields": {
+      "nombre": "Lija",
+      "categoria": "Ferreteria",
+      "precio": 1140,
+      "stock": 40,
+      "imagen": "38.jpg"
+    }
+  },
+  {
+    "model": "Ferreteria.producto",
+    "pk": 39,
+    "fields": {
+      "nombre": "Candado",
+      "categoria": "Seguridad",
+      "precio": 8360,
+      "stock": 12,
+      "imagen": "39.jpg"
+    }
+  },
+  {
+    "model": "Ferreteria.producto",
+    "pk": 40,
+    "fields": {
+      "nombre": "Cadena",
+      "categoria": "Ferreteria",
+      "precio": 5985,
+      "stock": 0,
+      "imagen": "40.jpg"
+    }
+  }
+]

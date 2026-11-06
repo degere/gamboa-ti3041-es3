@@ -1,0 +1,58 @@
+{% extends 'Ferreteria/base.html' %}
+{% load static %}
+{% block title %}McHammer · Ferretería en Osorno{% endblock %}
+
+{% block content %}
+<section class="hero">
+    <h1>McHammer · Ferretería en Osorno</h1>
+    <p>Herramientas, materiales y todo lo que necesitas para construir, reparar y mejorar tu hogar en el sur de Chile.</p>
+    <div class="hero-actions">
+        <a class="btn btn-primary" href="{% url 'catalogo' %}">Ver catálogo completo</a>
+        <a class="btn btn-secondary" href="#nosotros">Conoce más</a>
+    </div>
+</section>
+
+<section id="nosotros" class="info-grid">
+    <article class="info-card">
+        <div class="info-icon">📍</div>
+        <h3>Nuestra ubicación</h3>
+        <p>Nos encontramos en <strong>Av. Mackenna 1450, Osorno</strong>, a pasos del centro. Un local amplio, con estacionamiento y atención personalizada para maestros, constructoras y familias.</p>
+    </article>
+
+    <article class="info-card">
+        <div class="info-icon">🛠️</div>
+        <h3>Más de 40 productos</h3>
+        <p>Herramientas manuales y eléctricas, pinturas, artículos de seguridad, gasfitería, electricidad y jardín. Cada producto se administra desde nuestra base de datos con stock actualizado en tiempo real.</p>
+    </article>
+
+    <article class="info-card">
+        <div class="info-icon">🤝</div>
+        <h3>Compromiso local</h3>
+        <p>McHammer nace como un proyecto familiar osornino pensado para apoyar a quienes construyen con sus manos. Si no encuentras algo, lo conseguimos por encargo en menos de 48 horas.</p>
+    </article>
+</section>
+
+<h2 class="section-title">Productos destacados</h2>
+<div class="grid mt-2">
+    {% for producto in destacados %}
+    <article class="card">
+        <div class="card-img">
+            {% if producto.imagen %}
+                <img src="{% static 'Ferreteria/img/' %}{{ producto.imagen }}" alt="{{ producto.nombre }}">
+            {% endif %}
+        </div>
+        <div class="card-body">
+            <span class="categoria">{{ producto.categoria }}</span>
+            <h2>{{ producto.nombre }}</h2>
+            <p class="precio">${{ producto.precio }}</p>
+            <p class="stock ok">Disponible: {{ producto.stock }}</p>
+            <a class="btn btn-primary" href="{% url 'agregar_carrito' producto.id %}?next={{ request.path }}">
+                🛒 Agregar al carrito
+            </a>
+        </div>
+    </article>
+    {% empty %}
+        <p>No hay productos destacados.</p>
+    {% endfor %}
+</div>
+{% endblock %}
