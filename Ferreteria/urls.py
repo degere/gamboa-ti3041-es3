@@ -11,6 +11,10 @@ urlpatterns = [
     path('productos/<int:producto_id>/editar/', views.producto_editar, name='producto_editar'),
     path('productos/<int:producto_id>/eliminar/', views.producto_eliminar, name='producto_eliminar'),
 
+    # Reportes
+    path('reportes/categorias/', views.reporte_categorias, name='reporte_categorias'),
+    path('reportes/stock-critico/', views.reporte_stock_critico, name='reporte_stock_critico'),
+
     # Carrito
     path('carrito/', views.ver_carrito, name='ver_carrito'),
     path('carrito/agregar/<int:producto_id>/', views.agregar_carrito, name='agregar_carrito'),

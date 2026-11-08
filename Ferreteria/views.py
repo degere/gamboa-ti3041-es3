@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth import login
 from django.contrib import messages
 from django.db import transaction
-from django.db.models import F
+from django.db.models import F, Count, Avg, Sum
 from .models import Producto
 from .forms import RegistroForm, ProductoForm
 
@@ -67,6 +67,54 @@ def producto_eliminar(request, producto_id):
         return redirect('catalogo')
     # GET: pantalla de confirmación antes de borrar
     return render(request, 'Ferreteria/producto_confirmar_eliminar.html', {'producto': producto})
+
+
+# ---------- Reportes (consultas con el ORM) ----------
+
+def reporte_categorias(request):
+    """Reporte 1: resumen por categoría con annotate y totales con aggregate."""
+    filas = list(
+        Producto.objects.values('categoria')
+        .annotate(
+            cantidad=Count('id'),
+            precio_promedio=Avg('precio'),
+            stock_total=Sum('stock'),
+        )
+        .order_by('categoria')
+    )
+    for fila in filas:
+        fila['precio_promedio'] = round(fila['precio_promedio'] or 0)
+        fila['stock_total'] = fila['stock_total'] or 0
+
+    totales = Producto.objects.aggregate(
+        productos=Count('id'),
+        stock=Sum('stock'),
+        precio_promedio=Avg('precio'),
+    )
+    totales['stock'] = totales['stock'] or 0
+    totales['precio_promedio'] = round(totales['precio_promedio'] or 0)
+
+    return render(request, 'Ferreteria/reporte_categorias.html', {'filas': filas, 'totales': totales})
+
+
+def reporte_stock_critico(request):
+    """Reporte 2: productos con stock igual o menor a un umbral (filter + order_by)."""
+    try:
+        umbral = int(request.GET.get('umbral', 5))
+    except ValueError:
+        umbral = 5
+    umbral = max(umbral, 0)
+
+    productos = Producto.objects.filter(stock__lte=umbral).order_by('stock', 'nombre')
+    cantidad = productos.count()
+    agotados = productos.filter(stock=0).count()
+
+    return render(request, 'Ferreteria/reporte_stock_critico.html', {
+        'productos': productos,
+        'umbral': umbral,
+        'cantidad': cantidad,
+        'agotados': agotados,
+    })
 
 
 def registro(request):
