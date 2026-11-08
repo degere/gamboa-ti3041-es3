@@ -6,6 +6,11 @@ urlpatterns = [
     path('', views.home, name='home'),
     path('catalogo/', views.catalogo, name='catalogo'),
 
+    # CRUD de productos (staff)
+    path('productos/nuevo/', views.producto_crear, name='producto_crear'),
+    path('productos/<int:producto_id>/editar/', views.producto_editar, name='producto_editar'),
+    path('productos/<int:producto_id>/eliminar/', views.producto_eliminar, name='producto_eliminar'),
+
     # Carrito
     path('carrito/', views.ver_carrito, name='ver_carrito'),
     path('carrito/agregar/<int:producto_id>/', views.agregar_carrito, name='agregar_carrito'),

@@ -1,0 +1,31 @@
+{% extends 'Ferreteria/base.html' %}
+{% block title %}{{ titulo }} · McHammer{% endblock %}
+
+{% block content %}
+<div class="form-box">
+    <h1>{{ titulo }}</h1>
+
+    <form method="post" novalidate>
+        {% csrf_token %}
+
+        {% for field in form %}
+            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+            {{ field }}
+            {% if field.help_text %}
+                <p class="help-text">{{ field.help_text }}</p>
+            {% endif %}
+            {% if field.errors %}
+                <ul class="errorlist">
+                    {% for e in field.errors %}<li>{{ e }}</li>{% endfor %}
+                </ul>
+            {% endif %}
+        {% endfor %}
+
+        <button type="submit" class="btn btn-primary mt-2">Guardar</button>
+    </form>
+
+    <p class="text-muted mt-2" style="text-align:center; font-size:0.9rem;">
+        <a href="{% url 'catalogo' %}">← Volver al catálogo</a>
+    </p>
+</div>
+{% endblock %}

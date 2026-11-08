@@ -1,0 +1,22 @@
+{% extends 'Ferreteria/base.html' %}
+{% block title %}Eliminar producto · McHammer{% endblock %}
+
+{% block content %}
+<div class="form-box">
+    <h1>Eliminar producto</h1>
+
+    <p style="text-align:center; margin-bottom:1.5rem;">
+        ¿Seguro que quieres eliminar <strong>{{ producto.nombre }}</strong>?<br>
+        <span class="text-muted">Esta acción no se puede deshacer.</span>
+    </p>
+
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Sí, eliminar</button>
+    </form>
+
+    <p class="text-muted mt-2" style="text-align:center; font-size:0.9rem;">
+        <a href="{% url 'catalogo' %}">Cancelar y volver al catálogo</a>
+    </p>
+</div>
+{% endblock %}

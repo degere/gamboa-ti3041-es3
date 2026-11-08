@@ -1,11 +1,11 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth import login
 from django.contrib import messages
 from django.db import transaction
 from django.db.models import F
 from .models import Producto
-from .forms import RegistroForm
+from .forms import RegistroForm, ProductoForm
 
 
 
@@ -19,6 +19,54 @@ def catalogo(request):
     productos = Producto.objects.all().order_by('id')
     return render(request, 'Ferreteria/catalogo.html', {'productos': productos})
 
+
+# ---------- CRUD de productos (solo personal del sitio) ----------
+
+def es_staff(user):
+    return user.is_authenticated and user.is_staff
+
+
+solo_staff = user_passes_test(es_staff, login_url='login')
+
+
+@solo_staff
+def producto_crear(request):
+    if request.method == 'POST':
+        form = ProductoForm(request.POST)
+        if form.is_valid():
+            producto = form.save()
+            messages.success(request, f"Producto \"{producto.nombre}\" creado correctamente.")
+            return redirect('catalogo')
+    else:
+        form = ProductoForm()
+    return render(request, 'Ferreteria/producto_form.html', {'form': form, 'titulo': 'Nuevo producto'})
+
+
+@solo_staff
+def producto_editar(request, producto_id):
+    producto = get_object_or_404(Producto, pk=producto_id)
+    if request.method == 'POST':
+        form = ProductoForm(request.POST, instance=producto)
+        if form.is_valid():
+            form.save()
+            messages.success(request, f"Producto \"{producto.nombre}\" actualizado.")
+            return redirect('catalogo')
+    else:
+        form = ProductoForm(instance=producto)
+    return render(request, 'Ferreteria/producto_form.html',
+                  {'form': form, 'titulo': 'Editar producto', 'producto': producto})
+
+
+@solo_staff
+def producto_eliminar(request, producto_id):
+    producto = get_object_or_404(Producto, pk=producto_id)
+    if request.method == 'POST':
+        nombre = producto.nombre
+        producto.delete()
+        messages.success(request, f"Producto \"{nombre}\" eliminado.")
+        return redirect('catalogo')
+    # GET: pantalla de confirmación antes de borrar
+    return render(request, 'Ferreteria/producto_confirmar_eliminar.html', {'producto': producto})
 
 
 def registro(request):
@@ -121,6 +169,12 @@ def comprar(request):
         return redirect('ver_carrito')
 
     carrito = _carrito(request)
+
+    # Descarta del carrito productos que ya fueron eliminados del catálogo
+    existentes = set(str(pk) for pk in Producto.objects.filter(pk__in=[int(k) for k in carrito]).values_list('pk', flat=True))
+    carrito = {k: v for k, v in carrito.items() if k in existentes}
+    _guardar_carrito(request, carrito)
+
     if not carrito:
         messages.warning(request, "Tu carrito está vacío.")
         return redirect('catalogo')

@@ -3,7 +3,12 @@
 {% block title %}Catálogo · McHammer{% endblock %}
 
 {% block content %}
-<h1>Catálogo de productos</h1>
+<div class="flex-between">
+    <h1>Catálogo de productos</h1>
+    {% if user.is_staff %}
+        <a class="btn btn-primary" href="{% url 'producto_crear' %}">➕ Nuevo producto</a>
+    {% endif %}
+</div>
 
 <div class="grid mt-2">
     {% for producto in productos %}
@@ -26,6 +31,13 @@
             {% else %}
                 <p class="stock no">Sin stock</p>
                 <button class="btn btn-secondary" disabled>Agotado</button>
+            {% endif %}
+
+            {% if user.is_staff %}
+                <div class="flex-between">
+                    <a class="btn btn-secondary" href="{% url 'producto_editar' producto.id %}">✏️ Editar</a>
+                    <a class="btn btn-danger" href="{% url 'producto_eliminar' producto.id %}">🗑️ Eliminar</a>
+                </div>
             {% endif %}
         </div>
     </article>
