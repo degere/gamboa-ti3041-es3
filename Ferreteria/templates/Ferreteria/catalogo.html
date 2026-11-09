@@ -10,6 +10,8 @@
     {% endif %}
 </div>
 
+{% include 'Ferreteria/_recientes.html' %}
+
 <div class="grid mt-2">
     {% for producto in productos %}
     <article class="card">
@@ -20,7 +22,7 @@
         </div>
         <div class="card-body">
             <span class="categoria">{{ producto.categoria }}</span>
-            <h2>{{ producto.nombre }}</h2>
+            <h2><a href="{% url 'producto_detalle' producto.id %}">{{ producto.nombre }}</a></h2>
             <p class="precio">${{ producto.precio }}</p>
 
             {% if producto.stock > 0 %}

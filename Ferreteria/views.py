@@ -5,7 +5,7 @@ from django.contrib import messages
 from django.db import transaction
 from django.db.models import F, Count, Avg, Sum
 from .models import Producto
-from .forms import RegistroForm, ProductoForm
+from .forms import RegistroForm, ProductoForm, ConsultaClienteForm
 
 
 
@@ -17,7 +17,53 @@ def home(request):
 
 def catalogo(request):
     productos = Producto.objects.all().order_by('id')
-    return render(request, 'Ferreteria/catalogo.html', {'productos': productos})
+    return render(request, 'Ferreteria/catalogo.html', {
+        'productos': productos,
+        'recientes': _recientes(request),
+    })
+
+
+# ---------- Sesiones: últimos 3 productos visitados ----------
+
+def _registrar_visita(request, producto_id):
+    """Guarda en la sesión el id visitado, sin repetidos y solo los 3 más recientes."""
+    visitados = [pid for pid in request.session.get('visitados', []) if pid != producto_id]
+    visitados.insert(0, producto_id)
+    request.session['visitados'] = visitados[:3]
+
+
+def _recientes(request):
+    """Devuelve los productos visitados (del más reciente al más antiguo)."""
+    ids = request.session.get('visitados', [])
+    productos = Producto.objects.in_bulk(ids)
+    return [productos[i] for i in ids if i in productos]
+
+
+def producto_detalle(request, producto_id):
+    producto = get_object_or_404(Producto, pk=producto_id)
+    _registrar_visita(request, producto.pk)
+    return render(request, 'Ferreteria/producto_detalle.html', {
+        'producto': producto,
+        'recientes': _recientes(request),
+    })
+
+
+# ---------- Formulario de consultas de clientes ----------
+
+def contacto(request):
+    if request.method == 'POST':
+        form = ConsultaClienteForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "¡Gracias! Recibimos tu consulta y te responderemos al correo indicado.")
+            return redirect('contacto')
+    else:
+        initial = {}
+        producto_id = request.GET.get('producto', '')
+        if producto_id.isdigit():
+            initial['producto'] = int(producto_id)
+        form = ConsultaClienteForm(initial=initial)
+    return render(request, 'Ferreteria/contacto.html', {'form': form})
 
 
 # ---------- CRUD de productos (solo personal del sitio) ----------
