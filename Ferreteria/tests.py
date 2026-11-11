@@ -2,6 +2,7 @@ from django.test import TestCase, Client
 from django.urls import reverse
 
 from .models import Producto, ConsultaCliente
+from .templatetags.formato import clp
 
 
 class ConsultaFormularioTests(TestCase):
@@ -76,3 +77,65 @@ class SesionProductosVisitadosTests(TestCase):
         self.visitar(self.productos[0])
         r = self.client.get(reverse('catalogo'))
         self.assertContains(r, 'Vistos recientemente')
+
+
+class FormatoPreciosTests(TestCase):
+    def test_clp_agrega_puntos_de_miles(self):
+        self.assertEqual(clp(475), '$475')
+        self.assertEqual(clp(11875), '$11.875')
+        self.assertEqual(clp(1234567), '$1.234.567')
+
+
+class CatalogoFiltrosTests(TestCase):
+    """Buscador, filtro por categoría, solo con stock y orden del catálogo."""
+
+    def setUp(self):
+        Producto.objects.create(nombre='Martillo', categoria='Herramientas', precio=11875, stock=15)
+        Producto.objects.create(nombre='Taladro', categoria='Electricidad', precio=42750, stock=0)
+        Producto.objects.create(nombre='Cable', categoria='Electricidad', precio=11685, stock=20)
+
+    def nombres(self, **parametros):
+        r = self.client.get(reverse('catalogo'), parametros)
+        return [p.nombre for p in r.context['productos']]
+
+    def test_busqueda_por_nombre(self):
+        self.assertEqual(self.nombres(q='marti'), ['Martillo'])
+
+    def test_filtro_por_categoria(self):
+        self.assertCountEqual(self.nombres(categoria='Electricidad'), ['Taladro', 'Cable'])
+
+    def test_solo_con_stock_oculta_agotados(self):
+        self.assertNotIn('Taladro', self.nombres(stock='1'))
+
+    def test_catalogo_muestra_las_categorias_como_opciones(self):
+        r = self.client.get(reverse('catalogo'))
+        self.assertContains(r, 'cat-chips')
+        self.assertContains(r, '?categoria=Electricidad')
+
+    def test_las_categorias_no_aparecen_fuera_del_catalogo(self):
+        r = self.client.get(reverse('contacto'))
+        self.assertNotContains(r, 'cat-chips')
+        self.assertNotContains(r, '?categoria=Electricidad')
+
+    def test_orden_por_precio_descendente(self):
+        self.assertEqual(self.nombres(orden='precio_desc'), ['Taladro', 'Martillo', 'Cable'])
+
+
+class InicioYAutenticacionTests(TestCase):
+    """Inicio solo ofrece iniciar sesión; el registro se alcanza desde el login."""
+
+    def test_inicio_anonimo_ofrece_iniciar_sesion_pero_no_registro(self):
+        r = self.client.get(reverse('home'))
+        self.assertContains(r, reverse('login'))
+        self.assertNotContains(r, reverse('registro'))
+
+    def test_login_ofrece_enlace_a_registro(self):
+        r = self.client.get(reverse('login'))
+        self.assertContains(r, reverse('registro'))
+
+    def test_inicio_incluye_carruseles(self):
+        Producto.objects.create(nombre='Martillo', categoria='Herramientas', precio=11875, stock=15)
+        r = self.client.get(reverse('home'))
+        self.assertContains(r, 'data-hero')
+        self.assertContains(r, 'data-carrusel')
+

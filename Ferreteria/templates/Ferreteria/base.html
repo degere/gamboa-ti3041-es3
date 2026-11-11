@@ -5,51 +5,53 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}McHammer · Ferretería en Osorno{% endblock %}</title>
-    <link rel="stylesheet" href="{% static 'Ferreteria/css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'Ferreteria/css/style.css' %}?v=2">
+    <script src="{% static 'Ferreteria/js/sitio.js' %}?v=3" defer></script>
 </head>
 <body>
-    <nav>
-        <span class="logo">🔨 McHammer</span>
-        <ul>
-            <li><a href="{% url 'home' %}">Inicio</a></li>
-            <li><a href="{% url 'catalogo' %}">Catálogo</a></li>
-            <li><a href="{% url 'reporte_categorias' %}">Reporte por categoría</a></li>
-            <li><a href="{% url 'reporte_stock_critico' %}">Stock crítico</a></li>
-            <li><a href="{% url 'contacto' %}">Contacto</a></li>
+    <header class="site-header">
+        <div class="mainbar container">
+            <a class="logo" href="{% url 'home' %}">McHammer<small>Ferretería · Osorno</small></a>
 
-            <li>
-                <a href="{% url 'ver_carrito' %}">
-                    Carrito
-                    {% with carrito=request.session.carrito %}
-                        {% if carrito %}
-                            <span class="badge">{{ carrito|length }}</span>
-                        {% endif %}
-                    {% endwith %}
-                </a>
-            </li>
+            <form class="search" action="{% url 'catalogo' %}" method="get" role="search">
+                <input type="search" name="q" value="{{ q|default:'' }}" placeholder="¿Qué producto estás buscando?" aria-label="Buscar productos">
+                <button type="submit" class="btn btn-primary">🔍 Buscar</button>
+            </form>
 
-            {% if user.is_authenticated %}
-                {% if user.is_superuser %}
-                    <li>
-                        <a href="/admin/" target="_blank" class="nav-admin">
-                            ⚙️ Admin
-                        </a>
-                    </li>
-                {% endif %}
-
-                <li class="text-muted">👤 {{ user.username }}</li>
-                <li>
-                    <form method="post" action="{% url 'logout' %}" style="display:inline;">
+            <div class="acciones">
+                {% if user.is_authenticated %}
+                    {% if user.is_superuser %}
+                        <a href="/admin/" target="_blank" class="nav-admin">⚙️ Admin</a>
+                    {% endif %}
+                    <span class="text-muted">👤 {{ user.username }}</span>
+                    <form method="post" action="{% url 'logout' %}" class="inline-form">
                         {% csrf_token %}
                         <button type="submit" class="link-btn">Salir</button>
                     </form>
-                </li>
-            {% else %}
-                <li><a href="{% url 'login' %}">Iniciar sesión</a></li>
-                <li><a href="{% url 'registro' %}">Registrarse</a></li>
-            {% endif %}
-        </ul>
-    </nav>
+                {% else %}
+                    <a href="{% url 'login' %}">👤 Iniciar sesión</a>
+                {% endif %}
+
+                <a href="{% url 'ver_carrito' %}">
+                    🛒 Carrito
+                    {% with carrito=request.session.carrito %}
+                        {% if carrito %}<span class="badge">{{ carrito|length }}</span>{% endif %}
+                    {% endwith %}
+                </a>
+            </div>
+        </div>
+
+        <nav class="navbar" aria-label="Navegación principal">
+            <div class="container">
+                <a href="{% url 'home' %}">Inicio</a>
+                <a href="{% url 'catalogo' %}">Catálogo</a>
+                <span class="spacer"></span>
+                <a class="navbar-extra" href="{% url 'reporte_categorias' %}">Reporte por categoría</a>
+                <a class="navbar-extra" href="{% url 'reporte_stock_critico' %}">Stock crítico</a>
+                <a class="navbar-extra" href="{% url 'contacto' %}">Contacto</a>
+            </div>
+        </nav>
+    </header>
 
     <main>
         {% if messages %}
@@ -64,21 +66,26 @@
     </main>
 
     <footer class="site-footer">
-        <div class="footer-grid">
+        <div class="container footer-grid">
             <div>
-                <h4>🔨 McHammer</h4>
+                <h4>McHammer</h4>
                 <p>Ferretería y materiales de construcción en Osorno. Todo para tus proyectos, con stock real y atención personalizada.</p>
             </div>
             <div>
-                <h4>Ubicación</h4>
-                <p>Av. Mackenna 1450<br>Osorno, Región de Los Lagos<br>Chile</p>
+                <h4>Ayuda</h4>
+                <ul>
+                    <li><a href="{% url 'catalogo' %}">Catálogo completo</a></li>
+                    <li><a href="{% url 'contacto' %}">Escríbenos</a></li>
+                    <li><a href="{% url 'reporte_categorias' %}">Reporte por categoría</a></li>
+                    <li><a href="{% url 'reporte_stock_critico' %}">Stock crítico</a></li>
+                </ul>
             </div>
             <div>
                 <h4>Contacto</h4>
-                <p>📞 +56 64 2 345 678<br>✉️ contacto@mchammer.cl<br>🕒 Lun a Sáb · 9:00 – 19:00</p>
+                <p>Av. Mackenna 1450<br>Osorno, Región de Los Lagos<br>📞 +56 64 2 345 678<br>✉️ contacto@mchammer.cl<br>🕒 Lun a Sáb · 9:00 – 19:00</p>
             </div>
         </div>
-        <p class="footer-copy">© 2025 McHammer SpA </p>
+        <p class="footer-copy">© {% now "Y" %} McHammer SpA</p>
     </footer>
 </body>
 </html>

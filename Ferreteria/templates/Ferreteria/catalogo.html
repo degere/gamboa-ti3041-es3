@@ -1,50 +1,59 @@
 {% extends 'Ferreteria/base.html' %}
-{% load static %}
-{% block title %}Catálogo · McHammer{% endblock %}
+{% block title %}{% if categoria %}{{ categoria }} · {% endif %}Catálogo · McHammer{% endblock %}
 
 {% block content %}
-<div class="flex-between">
-    <h1>Catálogo de productos</h1>
+<nav class="breadcrumb" aria-label="Ruta">
+    <a href="{% url 'home' %}">Inicio</a> ›
+    {% if categoria %}<a href="{% url 'catalogo' %}">Catálogo</a> › {{ categoria }}{% else %}Catálogo{% endif %}
+</nav>
+
+<!-- Formulario GET que reúne búsqueda, orden y filtros -->
+<form id="filtros-form" method="get" action="{% url 'catalogo' %}">
+    {% if q %}<input type="hidden" name="q" value="{{ q }}">{% endif %}
+    {% if categoria %}<input type="hidden" name="categoria" value="{{ categoria }}">{% endif %}
+</form>
+
+<div class="catalogo-head">
+    <div>
+        <h1>{% if q %}Resultados para “{{ q }}”{% elif categoria %}{{ categoria }}{% else %}Catálogo de productos{% endif %}</h1>
+        <p class="text-muted">{{ total }} producto{{ total|pluralize }}</p>
+    </div>
     {% if user.is_staff %}
-        <a class="btn btn-primary" href="{% url 'producto_crear' %}">➕ Nuevo producto</a>
+        <a class="btn btn-primary" href="{% url 'producto_crear' %}">Nuevo producto</a>
     {% endif %}
+</div>
+
+<!-- Ordenar el catálogo por categoría -->
+<div class="cat-chips" aria-label="Categorías">
+    <a class="chip {% if not categoria %}active{% endif %}" href="{% url 'catalogo' %}">Todas</a>
+    {% for c in categorias %}
+        <a class="chip {% if categoria == c.categoria %}active{% endif %}"
+           href="{% url 'catalogo' %}?categoria={{ c.categoria|urlencode }}">{{ c.categoria }}<span>{{ c.total }}</span></a>
+    {% endfor %}
+</div>
+
+<div class="catalogo-opciones">
+    <label class="check">
+        <input type="checkbox" name="stock" value="1" form="filtros-form" {% if solo_stock %}checked{% endif %} onchange="this.form.submit()">
+        Solo con stock
+    </label>
+    <label for="orden" class="sr-only">Ordenar por</label>
+    <select name="orden" id="orden" form="filtros-form" onchange="this.form.submit()">
+        <option value="" {% if not orden %}selected{% endif %}>Orden predeterminado</option>
+        <option value="precio_asc" {% if orden == 'precio_asc' %}selected{% endif %}>Precio: menor a mayor</option>
+        <option value="precio_desc" {% if orden == 'precio_desc' %}selected{% endif %}>Precio: mayor a menor</option>
+        <option value="nombre" {% if orden == 'nombre' %}selected{% endif %}>Nombre (A–Z)</option>
+    </select>
+    <noscript><button type="submit" form="filtros-form" class="btn btn-secondary">Aplicar</button></noscript>
 </div>
 
 {% include 'Ferreteria/_recientes.html' %}
 
-<div class="grid mt-2">
+<div class="grid">
     {% for producto in productos %}
-    <article class="card">
-        <div class="card-img">
-            {% if producto.imagen %}
-                <img src="{% static 'Ferreteria/img/' %}{{ producto.imagen }}" alt="{{ producto.nombre }}">
-            {% endif %}
-        </div>
-        <div class="card-body">
-            <span class="categoria">{{ producto.categoria }}</span>
-            <h2><a href="{% url 'producto_detalle' producto.id %}">{{ producto.nombre }}</a></h2>
-            <p class="precio">${{ producto.precio }}</p>
-
-            {% if producto.stock > 0 %}
-                <p class="stock ok">Disponible: {{ producto.stock }}</p>
-                <a class="btn btn-primary" href="{% url 'agregar_carrito' producto.id %}?next={{ request.path }}">
-                    🛒 Agregar al carrito
-                </a>
-            {% else %}
-                <p class="stock no">Sin stock</p>
-                <button class="btn btn-secondary" disabled>Agotado</button>
-            {% endif %}
-
-            {% if user.is_staff %}
-                <div class="flex-between">
-                    <a class="btn btn-secondary" href="{% url 'producto_editar' producto.id %}">✏️ Editar</a>
-                    <a class="btn btn-danger" href="{% url 'producto_eliminar' producto.id %}">🗑️ Eliminar</a>
-                </div>
-            {% endif %}
-        </div>
-    </article>
+        {% include 'Ferreteria/_tarjeta.html' with gestion=True %}
     {% empty %}
-        <p>No hay productos cargados.</p>
+        <p>No encontramos productos con esos filtros. <a href="{% url 'catalogo' %}">Ver todo el catálogo</a></p>
     {% endfor %}
 </div>
 {% endblock %}

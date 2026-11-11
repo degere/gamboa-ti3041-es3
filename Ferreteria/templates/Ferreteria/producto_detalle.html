@@ -1,30 +1,45 @@
 {% extends 'Ferreteria/base.html' %}
-{% load static %}
+{% load static formato %}
 {% block title %}{{ producto.nombre }} · McHammer{% endblock %}
 
 {% block content %}
-<article class="card" style="max-width:520px;">
-    <div class="card-img" style="height:280px;">
+<nav class="breadcrumb" aria-label="Ruta">
+    <a href="{% url 'home' %}">Inicio</a> ›
+    <a href="{% url 'catalogo' %}">Catálogo</a> ›
+    <a href="{% url 'catalogo' %}?categoria={{ producto.categoria|urlencode }}">{{ producto.categoria }}</a> ›
+    {{ producto.nombre }}
+</nav>
+
+<div class="detalle">
+    <div class="detalle-img">
         {% if producto.imagen %}
-            <img src="{% static 'Ferreteria/img/' %}{{ producto.imagen }}" alt="{{ producto.nombre }}">
+            <img src="{% static 'Ferreteria/img/' %}{{ producto.imagen }}" alt="{{ producto.nombre }}" width="600" height="600">
+        {% else %}
+            <span class="sin-img">Sin imagen</span>
         {% endif %}
     </div>
-    <div class="card-body">
+
+    <div class="detalle-info">
         <span class="categoria">{{ producto.categoria }}</span>
         <h1>{{ producto.nombre }}</h1>
-        <p class="precio">${{ producto.precio }}</p>
+        <p class="precio">{{ producto.precio|clp }}</p>
 
         {% if producto.stock > 0 %}
-            <p class="stock ok">Disponible: {{ producto.stock }}</p>
-            <a class="btn btn-primary" href="{% url 'agregar_carrito' producto.id %}?next={{ request.path }}">🛒 Agregar al carrito</a>
+            <p class="stock ok">Disponible: {{ producto.stock }} unidades</p>
         {% else %}
             <p class="stock no">Sin stock</p>
         {% endif %}
 
-        <a class="btn btn-secondary" href="{% url 'contacto' %}?producto={{ producto.id }}">✉️ Consultar por este producto</a>
-        <a href="{% url 'catalogo' %}">← Volver al catálogo</a>
+        <div class="btn-row">
+            {% if producto.stock > 0 %}
+                <a class="btn btn-primary" href="{% url 'agregar_carrito' producto.id %}?next={{ request.path }}">🛒 Agregar al carrito</a>
+            {% endif %}
+            <a class="btn btn-secondary" href="{% url 'contacto' %}?producto={{ producto.id }}">✉️ Consultar por este producto</a>
+        </div>
+
+        <p><a href="{% url 'catalogo' %}">← Volver al catálogo</a></p>
     </div>
-</article>
+</div>
 
 {% include 'Ferreteria/_recientes.html' %}
 {% endblock %}

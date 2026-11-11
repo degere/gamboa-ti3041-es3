@@ -1,0 +1,17 @@
+{% if productos %}
+<section class="seccion" data-carrusel>
+    <div class="seccion-head">
+        <h2>{{ titulo }}</h2>
+        {% if ver_todo %}<a href="{% url 'catalogo' %}">Ver todo el catálogo →</a>{% endif %}
+    </div>
+    <div class="carrusel-wrap">
+        <button type="button" class="carrusel-btn prev" aria-label="Anterior">‹</button>
+        <div class="carrusel-pista">
+            {% for producto in productos %}
+                {% include 'Ferreteria/_tarjeta.html' %}
+            {% endfor %}
+        </div>
+        <button type="button" class="carrusel-btn next" aria-label="Siguiente">›</button>
+    </div>
+</section>
+{% endif %}

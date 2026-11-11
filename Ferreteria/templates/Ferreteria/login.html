@@ -2,27 +2,28 @@
 {% block title %}Iniciar sesión · McHammer{% endblock %}
 
 {% block content %}
-<div class="form-box">
-    <h1>Iniciar sesión</h1>
+<section class="panel panel-narrow">
+    <div class="panel-head">
+        <h1>Iniciar sesión</h1>
+        <p>Ingresa con tu cuenta para confirmar tus compras.</p>
+    </div>
 
-    {% if form.errors %}
-        <div class="msg error">Usuario o contraseña incorrectos.</div>
+    {% if form.non_field_errors %}
+        <div class="msg error">{% for e in form.non_field_errors %}{{ e }} {% endfor %}</div>
     {% endif %}
 
-    <form method="post">
+    <form method="post" novalidate>
         {% csrf_token %}
-        <label for="id_username">Usuario</label>
-        <input type="text" name="username" id="id_username" autofocus required>
-
-        <label for="id_password">Contraseña</label>
-        <input type="password" name="password" id="id_password" required>
-
-        <button type="submit" class="btn btn-primary">Entrar</button>
+        {% for field in form %}
+            {% include 'Ferreteria/_campo.html' %}
+        {% endfor %}
         <input type="hidden" name="next" value="{{ next }}">
+        <button type="submit" class="btn btn-primary btn-block">Entrar</button>
     </form>
 
-    <p class="text-muted mt-2" style="text-align:center; font-size:0.9rem;">
-        ¿No tienes cuenta? <a href="{% url 'registro' %}">Regístrate</a>
-    </p>
-</div>
+    <div class="panel-alt">
+        <span>¿Aún no tienes cuenta?</span>
+        <a class="btn btn-secondary btn-block" href="{% url 'registro' %}">Crear una cuenta</a>
+    </div>
+</section>
 {% endblock %}

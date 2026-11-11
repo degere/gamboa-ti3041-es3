@@ -1,23 +1,25 @@
 {% extends 'Ferreteria/base.html' %}
+{% load formato %}
 {% block title %}Stock crítico · McHammer{% endblock %}
 
 {% block content %}
+<nav class="breadcrumb" aria-label="Ruta"><a href="{% url 'home' %}">Inicio</a> › Stock crítico</nav>
 <h1>Reporte: stock crítico</h1>
 <p class="text-muted">Productos con stock igual o menor a {{ umbral }} unidades, del más bajo al más alto.</p>
 
-<form method="get" class="flex-between mt-2" style="justify-content:flex-start;">
+<form method="get" class="filtro-inline">
     <label for="umbral">Umbral de stock:</label>
-    <input type="number" name="umbral" id="umbral" min="0" value="{{ umbral }}"
-           style="width:90px; padding:0.5rem; border-radius:8px; border:1px solid var(--border); background:var(--bg); color:var(--text);">
+    <input type="number" name="umbral" id="umbral" min="0" value="{{ umbral }}">
     <button type="submit" class="btn btn-secondary">Filtrar</button>
 </form>
 
-<p class="mt-2">
+<p>
     <strong>{{ cantidad }}</strong> producto{{ cantidad|pluralize }} bajo el umbral,
     de los cuales <strong>{{ agotados }}</strong> están agotados.
 </p>
 
-<table class="tabla-carrito mt-2">
+<div class="table-wrap mt-2">
+<table class="tabla-carrito">
     <thead>
         <tr>
             <th>Producto</th>
@@ -31,7 +33,7 @@
         <tr>
             <td>{{ p.nombre }}</td>
             <td>{{ p.categoria }}</td>
-            <td>${{ p.precio }}</td>
+            <td>{{ p.precio|clp }}</td>
             <td style="text-align:center;">
                 {% if p.stock == 0 %}<span class="stock no">Agotado</span>{% else %}{{ p.stock }}{% endif %}
             </td>
@@ -41,4 +43,5 @@
         {% endfor %}
     </tbody>
 </table>
+</div>
 {% endblock %}

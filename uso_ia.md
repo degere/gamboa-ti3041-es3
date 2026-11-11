@@ -1,48 +1,9 @@
-# Uso de Inteligencia Artificial — ES3 (TI3041)
+"Me da error el reporte por categoría cuando no hay productos: sale None" | Me explicó que Sum y Avg devuelven None y hay que arreglarlo | Puse `or 0` y `round()` en los reportes, y validé el umbral con try/except |
+| "Haz que la página se vea como Sodimac" | Me dio la estructura: header, buscador, footer y precios en pesos | Cambié base.html, el CSS y agregué el filtro clp para el precio |
+"Agrega un carrusel al inicio" | Me dio el carrusel con botones y tarjetas de producto | Creé _carrusel.html, el carrusel del home y sitio.js |
+"¿Cómo agrego el CRUD a la página normal usando is_superuser?" | Me explicó cómo mostrar los botones y proteger las vistas solo para admin | Usé `is_staff` con `user_passes_test` en las vistas y `{% if user.is_staff %}` en las plantillas |
+"El CSS no se actualiza: guardo el archivo y la página sigue igual. Te paso mi CSS y mi HTML para que compares" | Comparé mis archivos y me marcó que el error era un tipeo en la conexión del CSS | Corregí el tipeo en el `href` del `<link>` del CSS en base.html y un problema con la conexion con los formularios ya que se mostraban de forma base|
+"Ayúdame a dejar todas las imágenes de productos en un mismo tamaño" | Me dio cómo redimensionarlas todas por igual | Redimensioné las imágenes de static/Ferreteria/img/ a un tamaño estándar |
 
-Proyecto: Catálogo Online — Ferretería McHammer
-Evaluación: ES3, Unidad 2 (ORM, reportes y formulario de clientes)
 
-<!--
-BORRADOR / PLANTILLA — antes de entregar:
-1) Reemplaza cada [corchete] por lo que realmente hiciste. No dejes corchetes.
-2) Agrega o quita filas según las consultas que de verdad realizaste.
-3) La Parte 2 NO puede estar redactada por una IA: escríbela tú, con tus palabras.
-4) Verifica que cada fila corresponda a código que existe en el repositorio, porque
-   en la revisión se contrasta este archivo con el código.
--->
-
-## Parte 1 — Registro de consultas
-
-| # | Etapa | Prompt enviado a la IA (textual) | Resumen de la respuesta | Qué usé / qué modifiqué |
-|---|-------|----------------------------------|-------------------------|--------------------------|
-| 1 | 0. Entorno | [pega el prompt literal, ej.: "Tengo un proyecto Django de la ES2; ayúdame a dejar operativo el repo con la BD poblada desde un fixture"] | [1–2 líneas: qué te propuso] | [qué aceptaste tal cual y qué cambiaste: nombre del proyecto, app, ruta del fixture, etc.] |
-| 2 | 1. CRUD | [prompt sobre las vistas de crear / editar / eliminar con confirmación] | [resumen] | [qué adaptaste: nombres de campos de tu modelo `Producto` (nombre, categoría, precio, stock, imagen), decorador `user_passes_test`, redirección al catálogo] |
-| 3 | 1. CRUD | [prompt sobre el formulario de producto y su template] | [resumen] | [qué cambiaste: `ProductoForm`, validaciones de nombre y precio, labels en español, campos del template] |
-| 4 | 2. Reportes | [prompt sobre reporte con `annotate` / `aggregate` por categoría] | [resumen] | [qué ajustaste: `Count`, `Avg`, `Sum`, redondeo del promedio en la vista, totales con `aggregate`] |
-| 5 | 2. Reportes | [prompt sobre reporte filtrado con `filter` y `order_by`] | [resumen] | [qué ajustaste: umbral por `GET`, `stock__lte`, orden por stock y nombre, conteo de agotados] |
-| 6 | 3. Clientes | [prompt sobre el modelo `ConsultaCliente` y su `ModelForm`] | [resumen] | [qué cambiaste: campos y largos, `SET_NULL` en el producto opcional, `auto_now_add` en la fecha, registro en `/admin`] |
-| 7 | 3. Clientes | [prompt sobre validaciones del formulario de contacto] | [resumen] | [qué ajustaste: mínimo de 3 caracteres en el nombre, mínimo de 10 en el mensaje, mensajes de error en español] |
-| 8 | 3. Clientes | [prompt sobre la funcionalidad con sesiones] | [resumen] | [qué cambiaste: guardar solo los 3 últimos productos visitados, sin repetidos, y mostrarlos en catálogo y ficha] |
-| 9 | 3. Clientes | [prompt sobre pruebas o sobre CSRF] | [resumen] | [qué cambiaste: agregué los tests de correo inválido, campos vacíos y POST sin token CSRF] |
-| 10 | Frontend | [prompt sobre estilos / orden de la interfaz, si lo usaste] | [resumen] | [qué cambiaste en `style.css` o en los templates] |
-
-## Parte 2 — Explicación del proceso
-
-<!--
-Escribe aquí entre 10 y 20 líneas, en primera persona y con tus palabras.
-No copies texto generado por IA. Para que no se te olvide nada, responde estas preguntas
-en prosa corrida (no en lista de respuestas):
-
-- ¿Para qué le pediste ayuda a la IA y por qué en esas partes y no en otras?
-- ¿Qué respuestas usaste tal cual, sin tocarlas? ¿Por qué te convencieron?
-- ¿Qué tuviste que corregir o adaptar (nombres de campos, rutas, validaciones,
-  algo que no funcionaba)? ¿Cómo te diste cuenta del error?
-- ¿Qué comparaste con la documentación de Django para decidir si lo que te daba
-  era correcto?
-- ¿Qué aprendiste del ORM (annotate/aggregate/filter) o de los formularios que antes
-  no manejabas?
-- ¿En qué parte sentiste que la IA no bastaba y tuviste que pensar tú la solución?
--->
-
-[Escribe aquí tu texto personal de 10 a 20 líneas.]
+le pedi a la ia solucion de problemas varios cuando trataba de implementar algo en la pagina y el css no reaccionaba a la par del html o cuando los colores no me quedaban correctos, ademas de pedirle un diseño mas moderno en base a la pagina de sodimac como la recomendacion dada por el mismo profe, tambien pedi una ayuda a la ia ya que yo pensaba que con superuser estaba bien, si bien queda bien para mayor disponibilidad y seguridad decidi usar el 'is_staf', ademas le pedi ayuda a la ia para añadir un carrucel a la pagina de inicio para que sea mas atractiva visualmente, ademas le pedi ayuda con el formateo de las imagenes ya que todas salian de manera distinta dentro de la pagina y con eso esto se soluciono de manera eficaz y con todas las imagenes en vez de una a una, ademas me ayudo bastante el entender mejor como funciona todo en el sistema ya que le pedi una explicacion de cada cosa que realizaba la ia por necesidad de entender todo mejor para evitar cuando tenga que explicarselo al profesor confundirme, ademas de para futuro uso de codigo entender mejor y saber que hace cada parte del codigo y poder hacer cambios y solucionar problemas, ademas me ayudo bastante entender la diferencia del is_superuser con el is_staff y la importancia de no limitar el uso a solo superuser, ya que en caso de necesidad el superuser puede tener mas permisos que el staff y asi se controla el sistema de mejor manera.

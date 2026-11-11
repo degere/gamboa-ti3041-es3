@@ -1,12 +1,14 @@
 {% extends 'Ferreteria/base.html' %}
-{% load static %}
+{% load static formato %}
 {% block title %}Carrito · McHammer{% endblock %}
 
 {% block content %}
+<nav class="breadcrumb" aria-label="Ruta"><a href="{% url 'home' %}">Inicio</a> › Carrito</nav>
 <h1>Tu carrito</h1>
 
 {% if items %}
-<table class="tabla-carrito mt-2">
+<div class="table-wrap mt-2">
+<table class="tabla-carrito">
     <thead>
         <tr>
             <th>Producto</th>
@@ -19,13 +21,15 @@
     <tbody>
         {% for item in items %}
         <tr>
-            <td style="display:flex; align-items:center; gap:0.8rem;">
-                {% if item.producto.imagen %}
-                    <img src="{% static 'Ferreteria/img/' %}{{ item.producto.imagen }}" alt="{{ item.producto.nombre }}">
-                {% endif %}
-                <span>{{ item.producto.nombre }}</span>
+            <td>
+                <div class="celda-producto">
+                    {% if item.producto.imagen %}
+                        <img src="{% static 'Ferreteria/img/' %}{{ item.producto.imagen }}" alt="{{ item.producto.nombre }}" width="50" height="50">
+                    {% endif %}
+                    <a href="{% url 'producto_detalle' item.producto.id %}">{{ item.producto.nombre }}</a>
+                </div>
             </td>
-            <td>${{ item.producto.precio }}</td>
+            <td>{{ item.producto.precio|clp }}</td>
             <td>
                 <div class="qty-controls">
                     <a class="btn btn-secondary"
@@ -37,7 +41,7 @@
                        style="padding:0.2rem 0.6rem;">+</a>
                 </div>
             </td>
-            <td style="font-weight:700;">${{ item.subtotal }}</td>
+            <td style="font-weight:700;">{{ item.subtotal|clp }}</td>
             <td>
                 <a class="btn btn-danger"
                    href="{% url 'quitar_carrito' item.producto.id %}?next={{ request.path }}"
@@ -49,10 +53,11 @@
     <tfoot>
         <tr>
             <td colspan="3" style="text-align:right;">Total:</td>
-            <td colspan="2">${{ total }}</td>
+            <td colspan="2">{{ total|clp }}</td>
         </tr>
     </tfoot>
 </table>
+</div>
 
 <div class="flex-between mt-3">
     <a class="btn btn-secondary" href="{% url 'catalogo' %}">← Seguir comprando</a>

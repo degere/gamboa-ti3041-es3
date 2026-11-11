@@ -3,22 +3,47 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth import login
 from django.contrib import messages
 from django.db import transaction
-from django.db.models import F, Count, Avg, Sum
+from django.db.models import F, Count, Avg, Sum, Q
 from .models import Producto
 from .forms import RegistroForm, ProductoForm, ConsultaClienteForm
 
 
 
 def home(request):
-    destacados = Producto.objects.filter(stock__gt=0).order_by('-precio')[:6]
-    return render(request, 'Ferreteria/home.html', {'destacados': destacados})
+    disponibles = Producto.objects.filter(stock__gt=0)
+    return render(request, 'Ferreteria/home.html', {
+        'destacados': disponibles.order_by('-precio')[:10],
+        'nuevos': disponibles.order_by('-id')[:10],
+        'recientes': _recientes(request),
+    })
 
 
 
 def catalogo(request):
-    productos = Producto.objects.all().order_by('id')
+    """Listado con búsqueda (q), filtro por categoría, solo con stock y orden."""
+    q = request.GET.get('q', '').strip()
+    categoria = request.GET.get('categoria', '').strip()
+    solo_stock = request.GET.get('stock') == '1'
+    orden = request.GET.get('orden', '')
+
+    productos = Producto.objects.all()
+    if q:
+        productos = productos.filter(Q(nombre__icontains=q) | Q(categoria__icontains=q))
+    if categoria:
+        productos = productos.filter(categoria=categoria)
+    if solo_stock:
+        productos = productos.filter(stock__gt=0)
+
+    ordenes = {'precio_asc': 'precio', 'precio_desc': '-precio', 'nombre': 'nombre'}
+    productos = productos.order_by(ordenes.get(orden, 'id'))
+
     return render(request, 'Ferreteria/catalogo.html', {
         'productos': productos,
+        'total': productos.count(),
+        'q': q,
+        'categoria': categoria,
+        'solo_stock': solo_stock,
+        'orden': orden,
         'recientes': _recientes(request),
     })
 

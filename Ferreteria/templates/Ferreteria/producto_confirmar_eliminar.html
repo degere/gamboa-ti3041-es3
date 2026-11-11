@@ -1,22 +1,32 @@
 {% extends 'Ferreteria/base.html' %}
+{% load static formato %}
 {% block title %}Eliminar producto · McHammer{% endblock %}
 
 {% block content %}
-<div class="form-box">
-    <h1>Eliminar producto</h1>
+<section class="panel">
+    <div class="panel-head">
+        <h1>Eliminar producto</h1>
+        <p>Esta acción no se puede deshacer.</p>
+    </div>
 
-    <p style="text-align:center; margin-bottom:1.5rem;">
-        ¿Seguro que quieres eliminar <strong>{{ producto.nombre }}</strong>?<br>
-        <span class="text-muted">Esta acción no se puede deshacer.</span>
-    </p>
+    <div class="celda-producto" style="margin-bottom:1.5rem;">
+        {% if producto.imagen %}
+            <img src="{% static 'Ferreteria/img/' %}{{ producto.imagen }}" alt="" width="72" height="72" style="width:72px;height:72px;border-radius:8px;object-fit:cover;">
+        {% endif %}
+        <div>
+            <strong>{{ producto.nombre }}</strong><br>
+            <span class="text-muted">{{ producto.categoria }} · {{ producto.precio|clp }}</span>
+        </div>
+    </div>
+
+    <p style="margin-bottom:1.2rem;">¿Seguro que quieres eliminar este producto del catálogo?</p>
 
     <form method="post">
         {% csrf_token %}
-        <button type="submit" class="btn btn-danger">Sí, eliminar</button>
+        <div class="btn-row">
+            <button type="submit" class="btn btn-danger">Sí, eliminar</button>
+            <a class="btn btn-secondary" href="{% url 'catalogo' %}">Cancelar</a>
+        </div>
     </form>
-
-    <p class="text-muted mt-2" style="text-align:center; font-size:0.9rem;">
-        <a href="{% url 'catalogo' %}">Cancelar y volver al catálogo</a>
-    </p>
-</div>
+</section>
 {% endblock %}

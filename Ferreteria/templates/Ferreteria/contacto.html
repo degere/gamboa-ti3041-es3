@@ -2,23 +2,30 @@
 {% block title %}Contacto · McHammer{% endblock %}
 
 {% block content %}
-<div class="form-box">
-    <h1>Envíanos tu consulta</h1>
+<nav class="breadcrumb" aria-label="Ruta"><a href="{% url 'home' %}">Inicio</a> › Contacto</nav>
 
-    <form method="post" novalidate>
-        {% csrf_token %}
+<div class="contacto-layout">
+    <section class="panel">
+        <div class="panel-head">
+            <h1>Envíanos tu consulta</h1>
+            <p>Cuéntanos qué necesitas y te responderemos al correo que indiques. Los campos con * son obligatorios.</p>
+        </div>
 
-        {% for field in form %}
-            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-            {{ field }}
-            {% if field.errors %}
-                <ul class="errorlist">
-                    {% for e in field.errors %}<li>{{ e }}</li>{% endfor %}
-                </ul>
-            {% endif %}
-        {% endfor %}
+        <form method="post" novalidate>
+            {% csrf_token %}
+            {% for field in form %}
+                {% include 'Ferreteria/_campo.html' %}
+            {% endfor %}
+            <button type="submit" class="btn btn-primary btn-block">Enviar consulta</button>
+        </form>
+    </section>
 
-        <button type="submit" class="btn btn-primary mt-2">Enviar consulta</button>
-    </form>
+    <aside class="contacto-info">
+        <h2>Datos de contacto</h2>
+        <p><strong>📍 Dirección</strong>Av. Mackenna 1450, Osorno</p>
+        <p><strong>📞 Teléfono</strong>+56 64 2 345 678</p>
+        <p><strong>✉️ Correo</strong>contacto@mchammer.cl</p>
+        <p><strong>🕒 Horario</strong>Lun a Sáb · 9:00 – 19:00</p>
+    </aside>
 </div>
 {% endblock %}
