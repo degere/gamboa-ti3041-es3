@@ -46,8 +46,10 @@
                 <a href="{% url 'home' %}">Inicio</a>
                 <a href="{% url 'catalogo' %}">Catálogo</a>
                 <span class="spacer"></span>
+                {% if user.is_staff %}
                 <a class="navbar-extra" href="{% url 'reporte_categorias' %}">Reporte por categoría</a>
                 <a class="navbar-extra" href="{% url 'reporte_stock_critico' %}">Stock crítico</a>
+                {% endif %}
                 <a class="navbar-extra" href="{% url 'contacto' %}">Contacto</a>
             </div>
         </nav>
@@ -76,8 +78,10 @@
                 <ul>
                     <li><a href="{% url 'catalogo' %}">Catálogo completo</a></li>
                     <li><a href="{% url 'contacto' %}">Escríbenos</a></li>
+                    {% if user.is_staff %}
                     <li><a href="{% url 'reporte_categorias' %}">Reporte por categoría</a></li>
                     <li><a href="{% url 'reporte_stock_critico' %}">Stock crítico</a></li>
+                    {% endif %}
                 </ul>
             </div>
             <div>

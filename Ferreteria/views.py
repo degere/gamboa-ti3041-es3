@@ -4,18 +4,21 @@ from django.contrib.auth import login
 from django.contrib import messages
 from django.db import transaction
 from django.db.models import F, Count, Avg, Sum, Q
-from .models import Producto
+from .models import Producto, ConsultaCliente
 from .forms import RegistroForm, ProductoForm, ConsultaClienteForm
 
 
 
 def home(request):
     disponibles = Producto.objects.filter(stock__gt=0)
-    return render(request, 'Ferreteria/home.html', {
+    contexto = {
         'destacados': disponibles.order_by('-precio')[:10],
         'nuevos': disponibles.order_by('-id')[:10],
         'recientes': _recientes(request),
-    })
+    }
+    if request.user.is_staff:
+        contexto['mensajes'] = ConsultaCliente.objects.all()
+    return render(request, 'Ferreteria/home.html', contexto)
 
 
 
@@ -140,8 +143,23 @@ def producto_eliminar(request, producto_id):
     return render(request, 'Ferreteria/producto_confirmar_eliminar.html', {'producto': producto})
 
 
-# ---------- Reportes (consultas con el ORM) ----------
+# ---------- Gestión de consultas (staff) ----------
 
+@solo_staff
+def toggle_solucionado(request, consulta_id):
+    """Marca o desmarca una consulta como solucionada, desde la página."""
+    consulta = get_object_or_404(ConsultaCliente, pk=consulta_id)
+    if request.method == 'POST':
+        consulta.solucionado = not consulta.solucionado
+        consulta.save(update_fields=['solucionado'])
+        estado = 'solucionada' if consulta.solucionado else 'pendiente'
+        messages.success(request, f"Consulta de {consulta.nombre} marcada como {estado}.")
+    return redirect('home')
+
+
+# ---------- Reportes (consultas con el ORM, solo staff) ----------
+
+@solo_staff
 def reporte_categorias(request):
     """Reporte 1: resumen por categoría con annotate y totales con aggregate."""
     filas = list(
@@ -168,6 +186,7 @@ def reporte_categorias(request):
     return render(request, 'Ferreteria/reporte_categorias.html', {'filas': filas, 'totales': totales})
 
 
+@solo_staff
 def reporte_stock_critico(request):
     """Reporte 2: productos con stock igual o menor a un umbral (filter + order_by)."""
     try:

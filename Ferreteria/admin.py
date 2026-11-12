@@ -10,8 +10,8 @@ class ProductoAdmin(admin.ModelAdmin):
 
 @admin.register(ConsultaCliente)
 class ConsultaClienteAdmin(admin.ModelAdmin):
-    list_display = ('nombre', 'correo', 'producto', 'fecha')
-    list_filter = ('fecha', 'producto__categoria')
+    list_display = ('nombre', 'correo', 'producto', 'fecha', 'solucionado')
+    list_filter = ('fecha', 'producto__categoria', 'solucionado')
     search_fields = ('nombre', 'correo', 'mensaje')
     readonly_fields = ('fecha',)
 

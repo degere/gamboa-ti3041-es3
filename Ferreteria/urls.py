@@ -17,6 +17,9 @@ urlpatterns = [
     path('reportes/categorias/', views.reporte_categorias, name='reporte_categorias'),
     path('reportes/stock-critico/', views.reporte_stock_critico, name='reporte_stock_critico'),
 
+    # Gestión de consultas (staff)
+    path('consultas/<int:consulta_id>/toggle/', views.toggle_solucionado, name='toggle_solucionado'),
+
     # Carrito
     path('carrito/', views.ver_carrito, name='ver_carrito'),
     path('carrito/agregar/<int:producto_id>/', views.agregar_carrito, name='agregar_carrito'),

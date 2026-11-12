@@ -24,6 +24,7 @@ class ConsultaCliente(models.Model):
         related_name='consultas',
     )
     fecha = models.DateTimeField(auto_now_add=True)
+    solucionado = models.BooleanField(default=False)
 
     class Meta:
         ordering = ['-fecha']
